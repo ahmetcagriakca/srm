@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IdentityServer</name>
+    </assembly>
+    <members>
+        <member name="P:IdentityServer.Infrastructor.Repository`1.Table">
+            <summary>
+            Table base object getting all table data with some restriction
+            CompanyId came from authentication and all values will adding with Corporation Id 
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Infrastructor.Repository`1.GetAllWithoutRestriction(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
+            <summary>
+            Getting table with any restriction 
+            </summary>
+            <param name="includes">Include Relational objects</param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Infrastructor.Repository`1.Dispose">
+            <summary>
+            Dispose the <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.PageManagement.Models.PageControllerModeler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Models.PageControllerModeler.CreateRequestToModel(IdentityServer.PageManagement.Models.CreatePageRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Models.PageControllerModeler.UpdateRequestToModel(IdentityServer.PageManagement.Models.UpdatePageRequest,IdentityServer.Models.PageManagement.Page@)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <param name="entity"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Models.PageControllerModeler.ToResponse(System.Collections.Generic.IEnumerable{IdentityServer.Models.PageManagement.Page})">
+            <summary>
+            
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Models.PageControllerModeler.ToResponse(IdentityServer.Models.PageManagement.Page)">
+            <summary>
+            
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServer.PageManagement.Services.IPageService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.Get">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.GetParents">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.Search(System.Nullable{System.Int64},System.String,System.String,System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Collections.Generic.List{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="url"></param>
+            <param name="name"></param>
+            <param name="componentName"></param>
+            <param name="order"></param>
+            <param name="icon"></param>
+            <param name="showOnMenu"></param>
+            <param name="parentId"></param>
+            <param name="pageRoles"></param>
+            <param name="isActive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.GetById(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.Create(IdentityServer.Models.PageManagement.Page,System.Nullable{System.Int32},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="entity"></param>
+            <param name="parentId"></param>
+            <param name="roleIdList"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.Update(IdentityServer.Models.PageManagement.Page,System.Nullable{System.Int32},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="entity"></param>
+            <param name="parentId"></param>
+            <param name="roleIdList"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.GetUserPages(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="userRoleIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.IPageService.CheckRoleComponent(System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="roleId"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.PageService.Create(IdentityServer.Models.PageManagement.Page,System.Nullable{System.Int32},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Öğrenci oluşturma
+            </summary>
+            <param name="entity"></param>
+            <param name="parentId"></param>
+            <param name="roleIdList"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.PageService.Update(IdentityServer.Models.PageManagement.Page,System.Nullable{System.Int32},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Öğrenci Güncelleme
+            </summary>
+            <param name="entity"></param>
+            <param name="parentId"></param>
+            <param name="roleIdList"></param>
+        </member>
+        <member name="M:IdentityServer.PageManagement.Services.PageService.CheckRoleComponent(System.Int32,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:IdentityServer.Security.Controllers.AccountController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.#ctor(IdentityServer.Security.ISecurityDomain)">
+            <summary>
+            
+            </summary>
+            <param name="securityDomain"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.Index(System.Int32)">
+            <summary>
+            User lists with paging
+            </summary>
+            <remarks>Good Comments!</remarks>
+            <param name="pageIndex">Index of the page</param>
+            <example>1</example>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.CreateAccount(IdentityServer.Security.Models.CreateAccountRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.Update(System.Int32,IdentityServer.Security.Models.AccountUpdateRequest)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.Activate(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.Show(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.ChangePassword(IdentityServer.Security.Models.AccountChangePasswordRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.AddUserRole(System.Int64,IdentityServer.Security.Models.AddUserRoleRequest)">
+            <summary>
+            
+            </summary>
+            <param name="userId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.CreateRole(IdentityServer.Security.Models.RoleStoreRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.UpdateRole(System.Int32,IdentityServer.Security.Models.RoleUpdateRequest)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.GetRoles">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Controllers.AccountController.GetDrivers">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServer.Security.Models.AccountChangePasswordRequest">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Security.Models.AccountChangePasswordRequest.UserId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Security.Models.AccountChangePasswordRequest.OldPassword">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Security.Models.AccountChangePasswordRequest.NewPassword">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Security.Models.GetUserResponse">
+            <summary>
+            User response detailed list
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Security.Models.GetUserResponse.Id">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Security.Models.GetUserResponse.UserName">
+            <summary>
+            User Name
+            </summary>
+            <example>runyoufools</example>
+        </member>
+        <member name="P:IdentityServer.Security.Models.GetUserResponse.Roles">
+            <summary>
+            User roles
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Security.Services.AccountService.#ctor(Fix.Security.Cryptography.ICryptoService,Fix.Data.IRepository{IdentityServer.Models.User},Fix.Data.IRepository{IdentityServer.Models.UserInRole},Fix.Data.IRepository{IdentityServer.Models.UserSession},Fix.Data.IRepository{IdentityServer.Models.Role},System.Collections.Generic.IEnumerable{Fix.Security.IPermissionProvider},Fix.Security.IAuthenticationProvider)">
+            <summary>
+            
+            </summary>
+            <param name="cryptoService"></param>
+            <param name="userRepository"></param>
+            <param name="userInRoleRepository"></param>
+            <param name="userSessionRepository"></param>
+            <param name="roleRepository"></param>
+            <param name="permissionProviders"></param>
+            <param name="authenticationProvider"></param>
+        </member>
+        <member name="M:IdentityServer.Security.Services.AccountService.CreateUniqueUserName(System.String)">
+            <summary>
+            Checking UserName is exists if UserName is exists added number to end of the username 
+            </summary>
+            <param name="userName">unique user name</param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Services.IAccountService.CreateUniqueUserName(System.String)">
+            <summary>
+            Checking Username is exists if Username is exists added number to end of the username 
+            </summary>
+            <param name="userName">unique user name</param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Security.Services.ValueProvider.#ctor(Fix.IWorkContext)">
+            <summary>
+            
+            </summary>
+            <param name="workContext"></param>
+        </member>
+        <member name="T:IdentityServer.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Startup.Environment">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Hosting.IHostEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+            <param name="environment"></param>
+        </member>
+        <member name="M:IdentityServer.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
+            <summary>
+            
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:IdentityServer.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+            <param name="loggerFactory"></param>
+        </member>
+        <member name="T:IdentityServer.Utility.ResultBuilder">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.Build``1(``0)">
+            <summary>
+            
+            </summary>
+            <param name="entity"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.Build(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            
+            </summary>
+            <param name="dictionary"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.Build(System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.Build(System.Exception,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="statusCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.Build(System.String,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="error"></param>
+            <param name="description"></param>
+            <param name="statusCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer.Utility.ResultBuilder.GetResult(System.Object,System.Int32)">
+            <summary>
+            Return json result for actionresult
+            </summary>
+            <param name="obj"></param>
+            <param name="statusCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PasswordHash.CreateHash(System.String)">
+            <summary>
+            Creates a salted PBKDF2 hash of the password.
+            </summary>
+            <param name="password">The password to hash.</param>
+            <returns>The hash of the password.</returns>
+        </member>
+        <member name="M:PasswordHash.ValidatePassword(System.String,System.String)">
+            <summary>
+            Validates a password given a hash of the correct one.
+            </summary>
+            <param name="password">The password to check.</param>
+            <param name="correctHash">A hash of the correct password.</param>
+            <returns>True if the password is correct. False otherwise.</returns>
+        </member>
+        <member name="M:PasswordHash.SlowEquals(System.Byte[],System.Byte[])">
+            <summary>
+            Compares two byte arrays in length-constant time. This comparison
+            method is used so that password hashes cannot be extracted from
+            on-line systems using a timing attack and then attacked off-line.
+            </summary>
+            <param name="a">The first byte array.</param>
+            <param name="b">The second byte array.</param>
+            <returns>True if both byte arrays are equal. False otherwise.</returns>
+        </member>
+        <member name="M:PasswordHash.PBKDF2(System.String,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Computes the PBKDF2-SHA1 hash of a password.
+            </summary>
+            <param name="password">The password to hash.</param>
+            <param name="salt">The salt.</param>
+            <param name="iterations">The PBKDF2 iteration count.</param>
+            <param name="outputBytes">The length of the hash to generate, in bytes.</param>
+            <returns>A hash of the password.</returns>
+        </member>
+    </members>
+</doc>

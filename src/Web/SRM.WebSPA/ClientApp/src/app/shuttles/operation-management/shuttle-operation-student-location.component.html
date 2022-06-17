@@ -1,0 +1,120 @@
+<div class="ui-g ui-fluid">
+	<div class="ui-g-12 ui-md-12  body-panel-start" style="height:60px">
+		<div class="ui-g-12">
+			<div class="ui-g-1 ui-sm-1">Operasyon: </div>
+			<div class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.shuttleOperationId}}</b>
+			</div>
+			<div class="ui-g-1 ui-sm-1">Saat: </div>
+			<div class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.dateTime|date:'dd.MM.yyyy - HH:mm'}}</b>
+			</div>
+			<div class="ui-g-1 ui-sm-1">Bölge: </div>
+			<div class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.regionName}}</b>
+			</div>
+			<div class="ui-g-1 ui-sm-1">Servis : </div>
+			<div class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.studentService?.plate}}({{shuttle?.studentService?.maxCapacity}})</b>
+			</div>
+			<div class="ui-g-1 ui-sm-3">Durum: </div>
+			<div class="ui-g-2 ui-sm-3">
+				<b>{{shuttle?.statusMessage}}</b>
+			</div>
+			<div *ngIf="shuttle?.operationStatus==2" class="ui-g-1 ui-sm-1">Gelenler: </div>
+			<div *ngIf="shuttle?.operationStatus==2" class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.counterCame}}</b>
+			</div>
+			<div *ngIf="shuttle?.operationStatus==2" class="ui-g-1 ui-sm-1">Gelmeyenler: </div>
+			<div *ngIf="shuttle?.operationStatus==2" class="ui-g-2 ui-sm-2">
+				<b>{{shuttle?.counterNotCame}}</b>
+			</div>
+		</div>
+	</div>
+	<div class="ui-g-12 ui-md-3  body-panel-start">
+		<p-scrollPanel [style]="leftStyle">
+			<p-table [value]="rowData" scrollHeight="{{studentScrollHeight}}" [scrollable]="showAdvice">
+				<ng-template pTemplate="body" let-record>
+					<tr (click)="showLocation(record)">
+						<td>
+							<div>
+								<label style="color:#039">{{record?.studentName}}</label>
+								<span *ngIf="record?.isCompensation" class="span-advice">Öneri</span>
+							</div>
+							<b>
+								{{record?.operationStatus == 0 ? "Beklemede" : record?.operationStatus == 1?"Geldi":"Gelmedi"}}
+							</b>
+						</td>
+					</tr>
+				</ng-template>
+			</p-table>
+			<div style="margin-top:5px" *ngIf="showAdvice">
+				<span class="span-title-advice-list">Öneriler</span>
+				<p-table [value]="rowDataAdvice" scrollHeight="{{studentScrollHeight}}" [scrollable]="true">
+					<ng-template pTemplate="body" let-record>
+						<tr (click)="showLocationAdvice(record)">
+							<td>
+								<div>
+									<label style="color:#039">{{record?.name + ' ' + record?.surname}}
+										<span class="student-call-button" *ngIf="record?.isAvaible"
+											(click)="startStudenCall(record)">Ara</span>
+									</label>
+									<span *ngIf="!record?.isAvaible" class="span-advice-not-available">Müsait
+										Değil</span>
+								</div>
+								<span><b>Devamsızlık: </b>{{record?.disContinuityCount}}</span>
+								<span style="margin-left:10px">
+									<b>
+										Aylık Devamsızlık:
+									</b>{{record?.mounthlyDiscontinuityCount}}
+								</span>
+							</td>
+						</tr>
+					</ng-template>
+				</p-table>
+				<p-paginator [rows]="10" [pageLinkSize]="3" totalRecords="{{this.totalAdviceCount}}"
+					(onPageChange)="paginateAdvice($event)"></p-paginator>
+			</div>
+		</p-scrollPanel>
+	</div>
+	<div class="ui-g-12 ui-md-9  body-panel-start" style="">
+		<p-gmap #gmap [style]="mapStyle" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)"
+			(onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"
+			(onZoomChanged)="onZoomChanged($event)" (onMapDragEnd)="onMapDragEnd($event)"></p-gmap>
+		<div class="ui-g-12 ui-md-9" style="margin:0px; padding:0px;max-height: 50px;text-align: center;">
+			<div style="height:40px">
+				<div class="ui-g-12  ui-md-2">
+					<img alt="main logo" src="assets/layout/images/mapsicons/mor.png" width="30" height="30">
+					<br />Beklemede
+				</div>
+				<div class="ui-g-12  ui-md-2">
+					<img alt="main logo" src="assets/layout/images/mapsicons/yesil.png" width="30" height="30">
+					<br />Geldi
+				</div>
+				<div class="ui-g-12  ui-md-2 ">
+					<img alt="main logo" src="assets/layout/images/mapsicons/kirmizi.png" width="30" height="30">
+					<br />Gelmedi
+				</div>
+				<div class="ui-g-12  ui-md-2">
+					<img alt="main logo" src="assets/layout/images/mapsicons/sari.png" width="30" height="30">
+					<br />Telafi
+				</div>
+				<div class="ui-g-12  ui-md-2">
+					<img alt="main logo" src="assets/layout/images/mapsicons/mavi.png" width="30" height="30">
+					<br />Öneri Müsait
+				</div>
+				<div class="ui-g-12  ui-md-2" style="word-wrap:normal">
+					<img alt="main logo" src="assets/layout/images/mapsicons/gri.png" width="30" height="30">
+					<br />Müsait Değil
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)"
+	header="Öğrenci kısıt girişi" [(visible)]="displayStudentAvailableDialog" modal="modal" [responsive]="true"
+	showEffect="fade" width="1000">
+	<student-available-time [isSeperated]="true"></student-available-time>
+</p-dialog>
+<student-advice-call></student-advice-call>

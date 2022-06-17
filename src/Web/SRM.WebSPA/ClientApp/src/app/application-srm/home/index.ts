@@ -1,0 +1,1 @@
+export * from 'application-srm/home/home.component';

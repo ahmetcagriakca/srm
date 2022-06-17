@@ -1,0 +1,108 @@
+<p-table [value]="rowData">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Kısıt Türü</th>
+            <th>Tarih Aralığı</th>
+            <th>Saat Aralığı</th>
+            <th>Günler</th>
+            <th>Açıklama</th>
+            <th>İşlemler</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+        <tr>
+            <td>{{record.isIntegrated?"Sürekli":"Parçalı"}}</td>
+            <td>{{record.startDate|date:'dd.MM.yyyy'}}-{{record.endDate|date:'dd.MM.yyyy'}}</td>
+            <td>{{record.startTime|date:'HH:mm'}}-{{record.endTime|date:'HH:mm'}}</td>
+            <td>
+                {{record.includedDate?.monday?"Pazartesi,":""}} {{record.includedDate?.tuesday?"Salı,":""}}
+                {{record.includedDate?.wednesday?"Çarşamba,":""}}
+                {{record.includedDate?.thursday?"Perşembe,":""}} {{record.includedDate?.friday?"Cuma,":""}}
+                {{record.includedDate?.saturday?"Cumartesi,":""}}
+                {{record.includedDate?.sunday?"Pazar,":""}}
+            </td>
+            <td>{{record.description}}</td>
+            <td>
+                <div class="ui-g">
+                    <div class="ui-g-8 ui-md-8 ">
+                        <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)" label="Düzenle"></button>
+                    </div>
+                    <div class="ui-g-4 ui-md-4 ui-lg-4">
+                        <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)" label="Sil"></button>
+                    </div>
+                </div>
+            </td>
+        </tr> 
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="ui-helper-clearfix" style="width:12%">
+            <button type="button" pButton icon="pi pi-plus" style="float:left" (click)="showDialogToAdd()" [disabled]="checkDisabledStatus()" label="Yeni Kısıt Giriş"></button>
+        </div>
+    </ng-template>
+</p-table>
+
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Kısıt Giriş" [(visible)]="displayDialog"
+        modal="modal" width="800" showEffect="fade">
+        <div class="ui-g form-group ui-fluid">
+            <div class="ui-g-12 body-panel-start">
+                <srm-formcontrol text="Başlangıç Tarihi" for="name">
+                    <p-radioButton name="groupRadiossss" formControlName="isIntegrated" value="true" label="Sürekli"
+                        [(ngModel)]="studentIsIntegrated" inputId="input1" (onClick)="radioChecked(studentIsIntegrated)"></p-radioButton>
+                    <p-radioButton name="groupRadiossss" formControlName="isIntegrated" value="false" label="Parçalı"
+                        [(ngModel)]="studentIsIntegrated" inputId="input2" [style]="{'margin-left':'10px'}" (onClick)="radioChecked(studentIsIntegrated)"></p-radioButton>
+                </srm-formcontrol>
+                <srm-formcontrol text="Başlangıç Tarihi" for="name">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.startDate" formControlName="startDate"
+                        dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true" monthNavigator="true"
+                        [showIcon]="true" yearRange="1950:2050" pValidationTooltip [control]="baseForm.controls.startDate"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Bitiş Tarihi" for="name">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.endDate" formControlName="endDate"
+                        dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true" monthNavigator="true"
+                        [showIcon]="true" yearRange="1950:2050" pValidationTooltip [control]="baseForm.controls.endDate"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Başlangıç Saati" for="name" *ngIf="!showIntegrated">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.startTime" formControlName="startTime"
+                        [timeOnly]="true" pValidationTooltip [control]="baseForm.controls.startTime"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Bitiş Saati" for="name" *ngIf="!showIntegrated">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.endTime" formControlName="endTime"
+                        [timeOnly]="true" pValidationTooltip [control]="baseForm.controls.endTime"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Günler" for="name" *ngIf="!showIntegrated">
+                    <p-checkbox formControlName="monday" name="monday" binary="true" label="Pazartesi" [(ngModel)]="record.includedDate.monday"
+                        inputId="monday"></p-checkbox>
+                    <p-checkbox formControlName="tuesday" name="tuesday" binary="true" label="Salı" [(ngModel)]="record.includedDate.tuesday"
+                        inputId="tuesday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                    <p-checkbox formControlName="wednesday" name="wednesday" binary="true" label="Çarşamba" [(ngModel)]="record.includedDate.wednesday"
+                        inputId="wednesday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                    <p-checkbox formControlName="thursday" name="thursday" binary="true" label="Perşembe" [(ngModel)]="record.includedDate.thursday"
+                        inputId="thursday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                    <p-checkbox formControlName="friday" name="friday" binary="true" label="Cuma" [(ngModel)]="record.includedDate.friday"
+                        inputId="friday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                    <p-checkbox formControlName="saturday" name="saturday" binary="true" label="Cumartesi" [(ngModel)]="record.includedDate.saturday"
+                        inputId="saturday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                    <p-checkbox formControlName="sunday" name="sunday" binary="true" label="Pazar" [(ngModel)]="record.includedDate.sunday"
+                        inputId="sunday" [style]="{'margin-left':'2px'}"></p-checkbox>
+                </srm-formcontrol>
+                <srm-formcontrol text="İçerik" for="description">
+                    <textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%"  pInputTextarea formControlName="description" [(ngModel)]="record.description"
+                        autoResize="autoResize" pValidationTooltip [control]="baseForm.controls.description"></textarea>
+                </srm-formcontrol>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)"
+                    label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)"
+                    label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord"
+                    label="Sil"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>

@@ -1,0 +1,33 @@
+version: "3"
+services:
+  srm-db:
+    environment:
+      - POSTGRES_USER=srm
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=Srm.Services.ApiDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  srm-api:
+    ports:
+      - '81:80'
+    depends_on:
+      - srm-db
+    volumes:
+      - /environments/srm/test/appsettings.json:/app/appsettings.json
+      - /environments/Logs/srm/test/services-api/:/app/Logs
+    restart: always
+
+  srm-web:
+    ports:
+      - '80:80'
+    depends_on:
+      - srm-api
+    restart: always
+
+volumes:
+  pgdata:
+    driver: local

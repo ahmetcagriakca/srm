@@ -1,0 +1,105 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12 body-panel-start">
+        <form autocomplete="off" [formGroup]="baseForm" novalidate>
+            <p-panel>
+                <div class="no-margin">
+                    <h1>Kimlik Bilgileri</h1>
+                    <div class="ui-g form-group">
+                        <div class="ui-g-12 ui-md-6">
+                            <srm-formcontrol text="Öğrenci Numarası" for="name">
+                                <input pInputText autocomplete="off" id="id" disabled="disabled" OnlyNumber="true" name="id" formControlName="id" [(ngModel)]="record.id"
+                                />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="TCK Numarası" for="name">
+                                <input pInputText autocomplete="off" id="identityNumber" OnlyNumber="true" name="identityNumber" autoComplete="off" formControlName="identityNumber"
+                                    [(ngModel)]="record.identityNumber" pValidationTooltip [control]="baseForm.controls.identityNumber"
+                                />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Ad Soyad" for="name">
+                                <div class="ui-g-12 ui-md-6 no-padding">
+                                    <input pInputText autocomplete="off" id="name" name="name" formControlName="name" [(ngModel)]="record.name" pValidationTooltip
+                                        [control]="baseForm.controls.name" />
+                                </div>
+                                <div class="ui-g-12 ui-md-6 no-padding left-padding">
+                                    <input pInputText autocomplete="off" id="surname" name="surname" formControlName="surname" [(ngModel)]="record.surname" pValidationTooltip
+                                        [control]="baseForm.controls.surname" />
+                                </div>
+                            </srm-formcontrol>
+
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                                
+                            <srm-formcontrol text="Doğum Tarihi" for="dateOfBirth">
+                                <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.dateOfBirth" [style]="{'width':'100%'}" formControlName="dateOfBirth"
+                                    dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true" monthNavigator="true" [showIcon]="true"
+                                    yearRange="1950:2050" pValidationTooltip [control]="baseForm.controls.dateOfBirth"></p-calendar>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Durum" for="isActive">
+
+                                <p-srmcheckbox binary="true" onLabel="Aktif" offLabel="Pasif" [(ngModel)]="record.isActive" id="isActive" name="isActive"
+                                    formControlName="isActive" pValidationTooltip [control]="baseForm.controls.isActive"></p-srmcheckbox>
+                            </srm-formcontrol>
+                            <!-- <srm-formcontrol text="Ebeveyn Ad Soyadı" for="parentName">
+                                <input pInputText autocomplete="off" id="parentName" name="parentName" formControlName="parentName" [(ngModel)]="record.parentName"
+                                    pValidationTooltip [control]="baseForm.controls.parentName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Ebeveyn İletişim">
+                                <input pInputText autocomplete="off" id="parentPhoneNumber" name="parentPhoneNumber" formControlName="parentPhoneNumber"
+                                    [(ngModel)]="record.parentPhoneNumber" pValidationTooltip [control]="baseForm.controls.parentPhoneNumber"
+                                />
+                            </srm-formcontrol> -->
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="ui-g-12 ui-md-10">
+                            </div>
+                            <div class="ui-g-12 ui-md-1">
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                    <button type="button" pButton (click)="clean()" label="Temizle"></button>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-1">
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                    <button type="button" pButton (click)="save()" label="Kaydet" [disabled]="!isValid(baseForm)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </p-panel> 
+        </form>
+
+        <p-tabView *ngIf="checkSave">
+            <p-tabPanel header="İletişim Bilgileri">
+                <student-contact></student-contact>
+            </p-tabPanel>
+            <p-tabPanel header="Zaman Kısıtları">
+                <student-available-time></student-available-time>
+            </p-tabPanel>
+            <p-tabPanel header="Adres bilgileri">
+                <student-address></student-address>
+            </p-tabPanel>
+            <p-tabPanel header="Öğretmen ilişkilendirmesi">
+                <student-instructor-relation></student-instructor-relation>
+            </p-tabPanel>
+            <!-- <p-tabPanel header="Öğrenci Gelişim">
+                <student-evolution></student-evolution>
+            </p-tabPanel>
+            <p-tabPanel header="Ders Planı">
+                Content 2
+            </p-tabPanel>
+            <p-tabPanel header="Veli Görüşme Bilgisi">
+                Content 3
+            </p-tabPanel>
+            <p-tabPanel header="Raporlar">
+                <student-report></student-report>
+            </p-tabPanel>
+          
+             -->
+        </p-tabView>
+
+    </div>
+</div>

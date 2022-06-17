@@ -1,0 +1,6 @@
+export * from 'shuttles/operation-management/shuttle-student-advice.component'
+export * from 'shuttles/operation-management/shuttle-operation-student-location.component'
+export * from 'shuttles/operation-management/shuttle-student-advice-by-id.component'
+export * from 'shuttles/operation-management/shuttle-list.component'
+export * from 'shuttles/operation-management/student-advice-call.component'
+export * from 'shuttles/operation-management/student-call.component'

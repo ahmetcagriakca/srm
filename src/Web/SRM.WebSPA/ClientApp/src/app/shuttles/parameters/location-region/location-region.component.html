@@ -1,0 +1,136 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <br />
+        <form autocomplete="off" [formGroup]="searchForm" novalidate>
+            <p-panel>
+                <div class="no-margin">
+                    <h1>Arama Kriterleri</h1>
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <srm-formcontrol text="Id" for="name">
+                                <input pInputText autocomplete="off" id="id" name="id" formControlName="id" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Bölge Ad" for="name">
+                                <input pInputText autocomplete="off" id="name" name="name" formControlName="name" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Bölge Kodu" for="code">
+                                <input pInputText autocomplete="off" id="code" OnlyNumber="true" name="code" formControlName="code" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Durum" for="name">
+                                <p-triStateCheckbox id="isActive" name="isActive" formControlName="isActive" (onChange)="onTriStateChange($event)"
+                                    [label]="triStatelabel"></p-triStateCheckbox>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Alt Bölge">
+                                <p-dropdown [options]="SubRegionList" filter="true" formControlName="subRegion" [style]="{'width':'100%'}">
+                                    <ng-template let-record pTemplate="item">
+                                        <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                            <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="ui-g-12 ui-md-2">
+                                <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Ekle"></button>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <button type="button" pButton icon="pi pi-search" (click)="search(searchForm.value)"
+                                    label="Ara"></button>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </p-panel>
+        </form>
+        <div class="ContentSideSections Implementation">
+            <p-dataTable [value]="rowData" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]"
+                [responsive]="true">
+                <p-header>
+                    Bölgeler
+                </p-header>
+                <p-column field="id" header="Id" [sortable]="true" [style]="{'width':'50px'}"></p-column>
+                <p-column field="name" header="Bölge Ad" [sortable]="true" [style]="{'width':'25%'}"></p-column>
+                <p-column field="code" header="Bölge Kodu" [sortable]="true" [style]="{'width':'25%'}"></p-column>
+                <p-column field="isActive" header="Durum" [sortable]="true" [style]="{'width':'25%'}">
+                    <ng-template let-col let-record="rowData" pTemplate="body">
+                        <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">
+                            {{record[col.field]?'Aktif':'Pasif'}}
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-column field="subRegions" header="Alt bölgeler" [sortable]="true" [style]="{'width':'25%'}">
+                    <ng-template let-col let-record="rowData" pTemplate="body">
+                        <div *ngFor="let subRegion of record[col.field]; let i = index">
+                            {{subRegion.name}},
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-column header="İşlemler" [style]="{'width':'220px'}">
+                    <ng-template let-col let-record="rowData" pTemplate type="body">
+                        <div class="ui-g">
+                            <div class="ui-g-8 ui-md-12">
+                                <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)"
+                                    label="Düzenle"></button>
+                            </div>
+                            <!-- <div class="ui-g-4 ui-md-4 ui-lg-4">
+                                <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)"
+                                    label="Sil"></button>
+                            </div> -->
+                        </div>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+            <form autocomplete="off" [formGroup]="baseForm" novalidate>
+                <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)"
+                    header="Proje Detay" [(visible)]="displayDialog" modal="modal" width="500" [responsive]="true"
+                    showEffect="fade">
+                    <div class="ui-g form-group ui-fluid">
+                        <div class="ui-g-12 body-panel-start">
+                            <srm-formcontrol text="Id" for="name">
+                                <input pInputText autocomplete="off" disabled="disabled" id="id" name="id"
+                                    formControlName="id" [(ngModel)]="record.id" pValidationTooltip [control]="baseForm.controls.id" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Bölge Ad" for="name">
+                                <input pInputText autocomplete="off" id="name" name="name" formControlName="name"
+                                    [(ngModel)]="record.name" pValidationTooltip [control]="baseForm.controls.name" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Bölge Kodu" for="code">
+                                <input pInputText autocomplete="off" id="code" OnlyNumber="true" name="code"  formControlName="code" maxlength="5"
+                                    [(ngModel)]="record.code" pValidationTooltip [control]="baseForm.controls.name" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Durum" for="name">
+                                <p-srmcheckbox binary="true" onLabel="Aktif" offLabel="Pasif" [(ngModel)]="record.isActive"
+                                    id="isActive" formControlName="isActive" name="isActive" pValidationTooltip
+                                    [control]="baseForm.controls.isActive">
+                                </p-srmcheckbox>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Alt Bölgeler" for="subRegions">
+                                <p-multiSelect id="subRegions" [options]="SubRegions" [(ngModel)]="selectedSubRegions"
+                                    formControlName="subRegions" [style]="{'width':'100%'}" pValidationTooltip
+                                    [control]="baseForm.controls.subRegions"></p-multiSelect>
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                            <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                            <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord"
+                                [disabled]="!isValid(baseForm)" label="Kaydet"></button>
+                            <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord"
+                                [disabled]="!isValid(baseForm)" label="Güncelle"></button>
+                            <!-- <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord"
+                                label="Sil"></button> -->
+                        </div>
+                    </p-footer>
+                </p-dialog>
+            </form>
+        </div>
+    </div>
+</div>

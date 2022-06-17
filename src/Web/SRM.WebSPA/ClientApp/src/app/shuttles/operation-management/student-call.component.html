@@ -1,0 +1,37 @@
+<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Öğrenci Arama"
+    [(visible)]="displayStudentCallDialog" modal="modal" width="700" showEffect="fade">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+            <srm-formcontrol text="Ad Soyad" for="studentCallDescription">
+                <b>{{selectedStudent?.name}} {{selectedStudent?.surname}}</b>
+            </srm-formcontrol>
+            <srm-formcontrol text="Veli Ad Soyad" for="studentCallDescription">
+                <b>{{selectedStudent?.parentName}}</b>
+            </srm-formcontrol>
+            <srm-formcontrol text="Veli Telefon" for="studentCallDescription">
+                <b>{{selectedStudent?.parentPhoneNumber}}</b>
+            </srm-formcontrol>
+            <srm-formcontrol text="Servis Bölgesi" for="studentCallDescription">
+                <b>{{selectedShuttle?.regionName}}</b>
+            </srm-formcontrol>
+            <srm-formcontrol text="Saat" for="studentCallDescription">
+                <b>{{selectedShuttle?.dateTime|date:'dd.MM.yyyy - HH:mm'}}</b>
+            </srm-formcontrol>
+            <srm-formcontrol text="Açıklama" for="studentCallDescription">
+                <textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%" pInputTextarea id="studentCallDescription"
+                    name="studentCallDescription" placeholder="Açıklama Giriniz" [(ngModel)]="studentCallDescription"
+                    autoResize="true"></textarea>
+            </srm-formcontrol>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="pi pi-check" (click)="saveCallOperation(selectedStudent.name,3)" label="Gelecek"
+                [disabled]="checkDate()"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="saveCallOperation(selectedStudent.name,4)" label="Gelmeyecek"
+                [disabled]="checkDate()"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+        </div>
+    </p-footer>
+</p-dialog>

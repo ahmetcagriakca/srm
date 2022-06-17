@@ -1,0 +1,35 @@
+version: "3"
+services:
+  postgre-db:
+    environment:
+      - POSTGRES_USER=srm
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=Srm.Services.Api.CevizAkademi
+    ports:
+      - "5437:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  services-api:
+    ports:
+      - '91:80'
+    depends_on:
+      - postgre-db
+    volumes:
+      - /environments/srm/cevizakademi/services-api/appsettings.json:/app/appsettings.json
+      - /environments/Logs/hasbahce/cevizakademi/services-api/:/app/Logs
+    restart: always
+
+  web-spa:
+    ports:
+      - '90:80'
+    volumes:
+      - /environments/srm/cevizakademi/web-spa/appsettings.json:/app/appsettings.json
+    depends_on:
+      - services-api
+    restart: always
+
+volumes:
+  pgdata:
+    driver: local

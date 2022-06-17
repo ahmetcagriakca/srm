@@ -1,0 +1,88 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <br />
+        <p-panel>
+            <div class="no-margin">
+                <srm-formcontrol text="Tarih Aralığı" for="name">
+                    <div class="ui-g-11">
+                        <p-calendar [locale]="calender_locale_tr" [(ngModel)]="studentJoinStatusRange" selectionMode="range"
+                            [readonlyInput]="true" dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true"
+                            monthNavigator="true" [showIcon]="true" yearRange="1950:2050"></p-calendar>
+                    </div>
+                    <div class="ui-g-1">
+                        <button type="button" pButton icon="pi pi-search" (click)="searchStudentJoinStatus()" pTooltip="Ara"></button>
+                    </div>
+                </srm-formcontrol>
+            </div>
+        </p-panel>
+        <p-panel>
+            <div class="ui-g no-margin">
+                <div class="ui-g-12 no-margin">
+                    <srm-formcontrol text="Toplam Planlanan Ders Sayısı" for="name">
+                        {{reportContent?.totalPlannedLessonCount}}
+                    </srm-formcontrol>
+                    <srm-formcontrol text="Toplam Telafi Sayısı" for="name">
+                        {{reportContent?.totalCompensationLessonCount}}
+                    </srm-formcontrol>
+                    <srm-formcontrol text="Öğrencilerin Katıldığı Toplam Ders Sayısı" for="name">
+                        {{reportContent?.totalJoinedLessonCount}}
+                    </srm-formcontrol>
+                    <srm-formcontrol text="Öğrencilerin Katılmadığı Toplam Ders Sayısı" for="name">
+                        {{reportContent?.totalNotJoinedLessonCount}}
+                    </srm-formcontrol>
+                    <srm-formcontrol text="Öğrencilerin Toplam Katılım Yüzdesi" for="name">
+                       {{reportContent?.totalParticipationPercentage}}
+                    </srm-formcontrol>
+                </div>
+                <div class="ui-g-12 no-margin">
+                    <div class="ui-g-10">
+                    </div>
+                    <div class="ui-g-2">
+                        <button type="button" pButton icon="pi pi-table" (click)="exportAsXLSX()" label="Excel Oluştur"></button>
+                    </div>
+                </div>
+            </div>
+        </p-panel>
+        <p-table #dt [columns]="cols" [value]="rowData" [paginator]="true" [rows]="25">
+            <ng-template pTemplate="caption">
+                <div style="text-align: right">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Ara" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        style="width:auto">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortField">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'studentId'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'studentIdentityNo'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'studentName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <div *ngSwitchCase="'participationPercentageString'">
+                            {{yearFilter[0]}} < Değer < {{yearFilter[1]}} <i class="fa fa-close" (click)="filterClear(dt)"
+                                style="cursor:pointer" *ngIf="yearFilter"></i>
+                                <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter"
+                                    [style]="{'width':'14em'}" [range]="true" (onChange)="onYearChange($event, dt,false)"></p-slider>
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                {{rowData?.length}} Öğrenci
+            </ng-template>
+        </p-table>
+    </div>
+</div>

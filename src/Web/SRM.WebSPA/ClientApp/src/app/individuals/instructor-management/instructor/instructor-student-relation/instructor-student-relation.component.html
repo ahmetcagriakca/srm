@@ -1,0 +1,83 @@
+<p-dataTable [value]="rowData" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]"
+    [responsive]="true">
+    <!-- <p-column field="branch" header="Branş" [sortable]="true" [style]="{'width':'35%'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">{{ record[col.field]?.name}}</div>
+        </ng-template>
+    </p-column> -->
+    <p-column field="student" header="Öğrenci" [sortable]="true" [style]="{'width':'35%'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">{{ record[col.field]?.name + " "
+                +record[col.field]?.surname}}</div>
+        </ng-template>
+    </p-column>
+    <p-column field="priority" header="Öncelik Derecesi" [sortable]="true" [style]="{'width':'35%'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">{{ record[col.field] + ".
+                Öncelik"}}</div>
+        </ng-template>
+    </p-column>
+    <p-column header="İşlemler" [style]="{'width':'220px'}">
+        <ng-template let-col let-record="rowData" pTemplate type="body">
+            <div class="ui-g">
+                <div class="ui-g-8 ui-md-8 ">
+                    <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)" label="Düzenle"></button>
+                </div>
+                <div class="ui-g-4 ui-md-4 ui-lg-4">
+                    <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)" label="Sil"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-column>
+    <p-footer>
+        <div class="ui-helper-clearfix" style="width:12%">
+            <button type="button" pButton icon="pi pi-plus" style="float:left" (click)="showDialogToAdd()" label="İlişki Tanımla"></button>
+        </div>
+    </p-footer>
+</p-dataTable>
+
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="İlişki Tanımı" [(visible)]="displayDialog"
+        modal="modal" width="800" showEffect="fade">
+        <div class="ui-g form-group  ui-fluid">
+            <div class="ui-g-12 body-panel-start">
+                <!-- <srm-formcontrol text="Branş" for="name">
+                    <p-dropdown id="branch" [options]="Branches" [(ngModel)]="selectedBranch" [style]="{'width':'350px'}"
+                        filter="true" formControlName="branch" pValidationTooltip [control]="baseForm.controls.branch">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol> -->
+                <srm-formcontrol text="Öğrenci" for="name">
+                    <p-dropdown id="student" [options]="Students" [(ngModel)]="selectedStudent" [style]="{'width':'350px'}"
+                        filter="true" formControlName="student" pValidationTooltip [control]="baseForm.controls.student">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Öncelik Derecesi" for="name">
+                    <input pInputText autocomplete="off" id="priority" [disabled]="true" OnlyNumber="true" name="priority" formControlName="priority"
+                        [(ngModel)]="record.priority" pValidationTooltip [control]="baseForm.controls.priority" />
+                </srm-formcontrol>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)"
+                    label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)"
+                    label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord"
+                    label="Sil"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>

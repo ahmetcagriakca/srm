@@ -1,0 +1,236 @@
+<div class="ui-g ui-fluid">
+	<div class="ui-g-12">
+		<div class="ui-g">
+			<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-12">
+					<label>Tarih</label>
+				</div>
+			</div>
+			<div class="ui-g-6">
+				<div class="ui-g-12 ui-md-12">
+					<p-calendar [locale]="calender_locale_tr" [(ngModel)]="shuttleOperationDate" dateFormat="dd.mm.yy"
+						showButtonBar="true" yearNavigator="true" monthNavigator="true" [showIcon]="true"
+						yearRange="1950:2050"></p-calendar>
+				</div>
+			</div>
+			<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6">
+					<button type="button" pButton icon="pi pi-search" (click)="getShuttles()" label="Ara"></button>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<button type="button" pButton icon="fa fa-file-excel-o" (click)="exportAsXLSX()"
+						label="Excel Oluştur"></button>
+				</div>
+			</div>
+		</div>
+		<p-dataView #dv [value]="rowData" [paginator]="false" emptyMessage="Kayıt Bulunamadı">
+			<ng-template let-shuttle pTemplate="listItem">
+				<div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+					<div class="ui-g-12 ui-md-12" style="text-align:center">
+						<div class="ui-g">
+							<div class="ui-g-1 ui-sm-6">Operasyon No: </div>
+							<div class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.shuttleOperationId}}</b>
+							</div>
+							<div class="ui-g-1 ui-sm-6">Saat: </div>
+							<div class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.dateTime|date:'dd.MM.yyyy - HH:mm'}}</b>
+							</div>
+							<div class="ui-g-1 ui-sm-6">Bölge: </div>
+							<div class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.regionName}}</b>
+							</div>
+							<div class="ui-g-1 ui-sm-6">Servis (Maks.Kapasite): </div>
+							<div class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.studentService?.plate}}({{shuttle?.studentService?.maxCapacity}})</b>
+							</div>
+							<div class="ui-g-1 ui-sm-6">Durum: </div>
+							<div class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.statusMessage}}</b>
+							</div>
+							<div *ngIf="shuttle?.operationStatus==2" class="ui-g-1 ui-sm-6">Gelenler: </div>
+							<div *ngIf="shuttle?.operationStatus==2" class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.counterCame}}</b>
+							</div>
+							<div *ngIf="shuttle?.operationStatus==2" class="ui-g-1 ui-sm-6">Gelmeyenler: </div>
+							<div *ngIf="shuttle?.operationStatus==2" class="ui-g-2 ui-sm-6">
+								<b>{{shuttle?.counterNotCame}}</b>
+							</div>
+						</div>
+						<div class="ui-g-12 ui-md-12 car-details">
+							<div class="ui-g-12 ui-md-3">
+								<button type="button" icon="fa fa-bus" pButton *ngIf="shuttle.operationStatus==0"
+									(click)="changeOperationStatus(shuttle.shuttleOperationId, 1)"
+									[disabled]="shuttle.operationStatus==2" label="Operasyon Başlat"></button>
+								<button type="button" icon="fa fa-flag-checkered" pButton
+									*ngIf="shuttle.operationStatus==1"
+									(click)="changeOperationStatus(shuttle.shuttleOperationId, 2)"
+									[disabled]="shuttle.operationStatus==2" label="Operasyon Bitir"></button>
+							</div>
+
+
+							<div class="ui-g-12 ui-md-3">
+								<button type="button" pButton icon="fa fa-file-excel-o" (click)="exportAsXLSX(shuttle)"
+									label="Excel Oluştur"></button>
+							</div>
+							<div class="ui-g-12 ui-md-3">
+								<button type="button" pButton icon="pi pi-plus" (click)="showAddStudentDialog(shuttle)"
+									label="Öğrenci Ekle"></button>
+							</div>
+							<div class="ui-g-12 ui-md-3">
+								<button type="button" pButton icon="fa fa-location-arrow" label="Konumları Göster"
+									[routerLink]="['/shuttle-affairs/shuttle-operation-student-location/', shuttle?.shuttleOperationId]"></button>
+							</div>
+						</div>
+					</div>
+					<div class="ui-g-12 ui-md-12 car-details">
+						<p-table [value]="shuttle.students">
+							<ng-template pTemplate="header">
+								<tr>
+									<th>Öğrenci ad</th>
+									<th>Durum</th>
+									<th>Katılım Türü</th>
+									<th>Planlanan
+										Ders</th>
+									<th *ngIf="shuttle?.operationStatus==2">Gerçekleşen
+										Ders</th>
+									<th *ngIf="shuttle?.operationStatus==0"></th>
+								</tr>
+							</ng-template>
+							<ng-template pTemplate="body" let-record>
+								<tr>
+									<td>{{record.name}}</td>
+									<td style="text-align: center;"
+										*ngIf="shuttle?.operationStatus==1 || shuttle.operationStatus == 2">
+										<div class="ui-g no-padding" style="width:250px;margin-bottom:10px">
+											<p-radioButton
+												name="group{{shuttle.shuttleOperationId}}{{record.shuttleStudentOperationId}}"
+												value="1" label="Geldi" [(ngModel)]="record.statusValue"
+												[disabled]="shuttle.operationStatus == 0"
+												inputId="input{{shuttle.shuttleOperationId}}{{record.shuttleStudentOperationId}}1"
+												(onClick)="radioChecked(shuttle.operationStatus,record.name,record.shuttleStudentOperationId,record.statusValue,record )">
+											</p-radioButton>
+											<p-radioButton
+												name="group{{shuttle.shuttleOperationId}}{{record.shuttleStudentOperationId}}"
+												value="2" label="Gelmedi" [(ngModel)]="record.statusValue"
+												[disabled]="shuttle.operationStatus != 1  && shuttle.operationStatus != 2 "
+												inputId="input{{shuttle.shuttleOperationId}}{{record.shuttleStudentOperationId}}2"
+												[style]="{'margin-left':'10px'}"
+												(onClick)="radioChecked(shuttle.operationStatus,record.name,record.shuttleStudentOperationId,record.statusValue,record )">
+											</p-radioButton>
+										</div>
+									</td>
+									<td style="text-align: center;" *ngIf="shuttle?.operationStatus==0 ">
+										{{record.statusDescription }}
+									</td>
+									<td>{{record.isCompensation ? "Telafi" : "Planlı" }}</td>
+									<td>
+										{{ record.lessonRelation.plannedLessonCount }}
+									</td>
+									<td *ngIf="shuttle?.operationStatus==2">
+										<div class="ui-g">
+											<div class="no-padding"
+												[ngClass]="{'ui-g-8': record.lessonRelation.completedLessonCountOld!=record.lessonRelation.completedLessonCount, 'ui-g-12': record.lessonRelation.completedLessonCountOld==record.lessonRelation.completedLessonCount, 'third': false}">
+												<p-dropdown id="completedLessonCount" [options]="CompletedLessonCounts"
+													[disabled]="record.status==4 || record.status==2"
+													[(ngModel)]="record.lessonRelation.completedLessonCount"
+													filter="true" [style]="{'width':'100%'}">
+													<ng-template let-record pTemplate="item">
+														<div class="ui-helper-clearfix"
+															style="position: relative;height: 25px;">
+															<div
+																style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">
+																{{record.label}}</div>
+														</div>
+													</ng-template>
+												</p-dropdown>
+											</div>
+											<div class="ui-g-4 no-padding left-padding"
+												*ngIf="record.lessonRelation.completedLessonCountOld!=record.lessonRelation.completedLessonCount">
+												<button type="button" pButton
+													(click)="setStudentOperastionLessonsCount(record)"
+													label="Kaydet"></button>
+											</div>
+										</div>
+
+									</td>
+									<td *ngIf="shuttle?.operationStatus==0 && record.status == 0">
+										<button type="button" pButton *ngIf="true"
+											(click)="startStudentCall(shuttle, record.shuttleStudentOperationId, record.studentId,record)"
+											label="Arama Başlat" [disabled]="checkDate(shuttle.dateTime)"></button>
+									</td>
+								</tr>
+							</ng-template>
+						</p-table>
+					</div>
+
+				</div>
+			</ng-template>
+		</p-dataView>
+
+	</div>
+</div>
+
+<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)"
+	header="Önerilen Öğrenciler" [modal]="true" [positionTop]="100" [(visible)]="displayShuttleDialog"
+	[responsive]="true" showEffect="fade" width="1200">
+	<shuttle-student-advice-by-id [shuttleList]="true"></shuttle-student-advice-by-id>
+</p-dialog>
+
+
+<form autocomplete="off" [formGroup]="searchForm" novalidate>
+	<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog1 (onShow)="dialogOnShowCenter(dialog1)"
+		header="Öğrenci Ekle" [(visible)]="displayAddStudent" modal="modal1" [responsive]="true" showEffect="fade"
+		width="700">
+		<div class="ui-g form-group ui-fluid">
+			<div class="ui-g-12 body-panel-start">
+				<srm-formcontrol text="Saat" for="locationRegion">
+					<label>{{addStudentSelectedShuttle?.dateTime|date:'dd.MM.yyyy - HH:mm'}}</label>
+				</srm-formcontrol>
+				<srm-formcontrol text="Bölge" for="locationRegion">
+					<label>{{addStudentSelectedShuttle?.regionName}}</label>
+				</srm-formcontrol>
+				<srm-formcontrol text="Servis" for="locationRegion">
+					<label>{{addStudentSelectedShuttle?.studentService?.plate}}({{addStudentSelectedShuttle?.studentService?.maxCapacity}})</label>
+				</srm-formcontrol>
+				<srm-formcontrol text="Öğrenciler" for="locationRegion">
+					<p-dropdown id="students" [options]="Students" [(ngModel)]="selectedStudent" filter="true"
+						formControlName="students" [style]="{'width':'100%'}" pValidationTooltip
+						[control]="searchForm.controls.students">
+						<ng-template let-record pTemplate="item">
+							<div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+								<div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">
+									{{record.label}}</div>
+							</div>
+						</ng-template>
+					</p-dropdown>
+				</srm-formcontrol>
+				<srm-formcontrol text="Ders Sayısı" for="locationRegion">
+					<p-dropdown id="completedLessonCount" [options]="AddStudenCompletedLessonCounts"
+						formControlName="lessonCount" [(ngModel)]="lessonCount" filter="true" [style]="{'width':'100%'}"
+						pValidationTooltip [control]="searchForm.controls.lessonCount">
+						<ng-template let-record pTemplate="item">
+							<div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+								<div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">
+									{{record.label}}</div>
+							</div>
+						</ng-template>
+					</p-dropdown>
+				</srm-formcontrol>
+			</div>
+		</div>
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="pi pi-check" (click)="addNewStudent()"
+					[disabled]="!isValid(searchForm)" label="Kaydet"></button>
+			</div>
+		</p-footer>
+	</p-dialog>
+</form>
+<student-call></student-call>
+
+<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialogLocation
+	(onShow)="dialogOnShowCenter(dialogLocation)" header="Servis Konumları" [modal]="true" [positionTop]="20"
+	[(visible)]="displayShuttleLocationDialog" [responsive]="true" showEffect="fade" minheight="600" height="950">
+	<shuttle-operation-student-location></shuttle-operation-student-location>
+</p-dialog>

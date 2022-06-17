@@ -1,0 +1,37 @@
+<form autocomplete="off" [formGroup]="baseForm" novalidate (keyup.enter)="login()">
+    <div class="login-panel ui-fluid">
+        <div class="ui-g">
+            <div class="ui-g-12 logo-container">
+                <img src="../assets/layout/images/srm-dark.png" alt="logo-dark" />
+                <div class="topbar">
+                    <div class="topbar-main">
+                        <div class="app-name">SRM {{_configurationService.serverSettings.applicationName}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <p-messages [value]="msgs"></p-messages>
+                <div class="input-wrapper">
+                    <input pInputText autocomplete="off" type="text" autocomplete="off" placeholder="Kullanıcı Adı"
+                        class="ui-inputtext ui-widget" id="userName" name="userName" formControlName="userName">
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="input-wrapper">
+                    <input type="password" autocomplete="off" placeholder="Şifre" class="ui-inputtext ui-widget" id="password"
+                        name="password" formControlName="password">
+                </div>
+            </div>
+            <div class="ui-g-12 chkbox-container">
+                <input type="checkbox" id="remember-me" class="ui-chkbox ui-chkbox-box" formControlName="rememberMe">
+                <label for="remember-me">Beni Hatırla</label>
+            </div>
+            <div class="ui-g-12 button-container">
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only green-btn raised-btn rounded-btn"
+                    label="Giriş Yap" (click)="login()">
+                    <span class="ui-button-text ui-c">Giriş Yap</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,72 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <form autocomplete="off" [formGroup]="baseForm" novalidate>
+            <p-panel>
+                <div class="no-margin">
+                    <h1>Kimlik Bilgileri</h1>
+                    <div class="ui-g form-group">
+                        <div class="ui-g-12 ui-md-6">
+                            <srm-formcontrol text="Öğretmen Numarası" for="name">
+                                <input pInputText autocomplete="off" id="id" disabled="disabled" OnlyNumber="true" name="id"
+                                    formControlName="id" [(ngModel)]="record.id" pValidationTooltip [control]="baseForm.controls.id" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="TCK Numarası" for="name">
+                                <input pInputText autocomplete="off" id="identityNumber" OnlyNumber="true" name="identityNumber"
+                                    formControlName="identityNumber" [(ngModel)]="record.identityNumber"
+                                    pValidationTooltip [control]="baseForm.controls.identityNumber" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Ad Soyad" for="name">
+                                <div class="ui-g-12 ui-md-6 no-padding">
+                                    <input pInputText autocomplete="off" id="name" name="name" formControlName="name"
+                                        [(ngModel)]="record.name" pValidationTooltip [control]="baseForm.controls.name" />
+                                </div>
+                                <div class="ui-g-12 ui-md-6 no-padding left-padding">
+                                    <input pInputText autocomplete="off" id="surname" name="surname" formControlName="surname"
+                                        [(ngModel)]="record.surname" pValidationTooltip [control]="baseForm.controls.surname" />
+                                </div>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Durum" for="isActive">
+                                <p-srmcheckbox binary="true" onLabel="Aktif" offLabel="Pasif" [(ngModel)]="record.isActive"
+                                    id="isActive" name="isActive" formControlName="isActive" pValidationTooltip
+                                    [control]="baseForm.controls.isActive"></p-srmcheckbox>
+                            </srm-formcontrol>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <srm-formcontrol text="Email" for="isActive">
+                                <input pInputText autocomplete="off" id="email" name="email" formControlName="email"
+                                    [(ngModel)]="record.email" pValidationTooltip [control]="baseForm.controls.email" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Telefon">
+                                <input pInputText autocomplete="off" id="phone" name="phone" formControlName="phone"
+                                    [(ngModel)]="record.phone" pValidationTooltip [control]="baseForm.controls.phone" />
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="ui-g-12 ui-md-10">
+                            </div>
+                            <div class="ui-g-12 ui-md-1">
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                    <button type="button" pButton (click)="clean()" label="Temizle"></button>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-1">
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                    <button type="button" pButton (click)="save()" label="Kaydet" [disabled]="!isValid(baseForm)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </p-panel>
+        </form>
+        <p-tabView>
+            <p-tabPanel header="Öğrenci ilişkilendirmesi">
+				<instructor-student-relation></instructor-student-relation>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+# This is a sample build configuration for .NET Core.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+pipelines:
+  default:
+    - step:
+        image: microsoft/dotnet:sdk
+        deployment: test
+        caches:
+          - dotnetcore
+        script: # Modify the commands below to build your repository.
+          - export PROJECT_NAME=src/Services/API/SRM.Services.Api/SRM.Services.Api.csproj        
+          - dotnet restore
+          - dotnet build $PROJECT_NAME  
+          - dotnet publish --no-restore -c Release $PROJECT_NAME  
+          
+          - curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz" --output nodejs.tar.gz \ && echo "$NODE_DOWNLOAD_SHA nodejs.tar.gz" | sha256sum -c - \ && tar -xzf "nodejs.tar.gz" -C /usr/local --strip-components=1 \ && rm nodejs.tar.gz \ && ln -s /usr/local/bin/node /usr/local/bin/nodejs 
+          - export PROJECT_NAME=SRM.WebSPA.csproj 
+          - cd src/Web/SRM.WebSPA/ClientApp/
+          - npm install
+          - cd ..
+          - dotnet restore
+          - dotnet build $PROJECT_NAME 
+          - dotnet publish --no-restore -c Release $PROJECT_NAME 

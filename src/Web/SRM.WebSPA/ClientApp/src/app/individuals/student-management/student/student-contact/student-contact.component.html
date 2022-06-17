@@ -1,0 +1,60 @@
+<p-table [value]="rowData">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Veli Adı</th>
+            <th>Telefon Numarası</th>
+            <th>İşlemler</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+        <tr>
+            <td>{{record.name}}</td>
+            <td>{{record.number}}</td>
+            <td>
+                <div class="ui-g">
+                    <div class="ui-g-8 ui-md-6">
+                        <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)" label="Düzenle"></button>
+                    </div>
+                    <div class="ui-g-4 ui-md-4 ui-lg-4">
+                        <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)" label="Sil"></button>
+                    </div>
+                   
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="ui-helper-clearfix" style="width:15%">
+            <button type="button" pButton icon="pi pi-plus" style="float:left" (click)="showDialogToAdd()" [disabled]="checkDisabledStatus()"
+                label="Yeni İletişim Bilgisi Giriş"></button>
+        </div>
+    </ng-template>
+</p-table>
+
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="İletişim Bilgisi"
+        [(visible)]="displayDialog" modal="modal" width="800" showEffect="fade">
+        <div class="ui-g form-group ui-fluid">
+            <div class="ui-g-12 body-panel-start">
+                <srm-formcontrol text="Veli Adı" for="Name">
+                    <input pInputText autocomplete="off" id="Name" name="Name" formControlName="Name" [(ngModel)]="record.name"
+                        pValidationTooltip [control]="baseForm.controls.Name" />
+                </srm-formcontrol>
+
+                <srm-formcontrol text="Veli Telefon Numarası" for="Number">
+                    <input pInputText autocomplete="off" id="number" name="number" formControlName="Number"
+                        [(ngModel)]="record.number" pValidationTooltip [control]="baseForm.controls.Number" />
+                </srm-formcontrol>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)" label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)" label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord" label="Sil"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>

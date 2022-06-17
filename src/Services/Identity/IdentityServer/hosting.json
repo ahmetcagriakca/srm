@@ -1,0 +1,7 @@
+{
+  "urls": "https://ahmetcagriakca.com:443",
+  "certificateSettings": {
+    "filename": "certificate.pfx",
+    "password": "CoheM1234"
+  }
+}

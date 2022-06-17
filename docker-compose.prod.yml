@@ -1,0 +1,18 @@
+version: "3"
+services:
+  services-api:
+    ports:
+      - '87:80'
+    volumes:
+      - /environments/srm/prod/services-api/appsettings.json:/app/appsettings.json
+      - /environments/Logs/srm/prod/services-api/:/app/Logs
+    restart: always
+
+  web-spa:
+    ports:
+      - '86:80'
+    volumes:
+      - /environments/srm/prod/web-spa/appsettings.json:/app/appsettings.json
+    depends_on:
+      - services-api
+    restart: always

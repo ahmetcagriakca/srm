@@ -1,0 +1,36 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12 body-panel-start">
+        <div class="ui-g-12 ">
+            <div class="card">
+                <srm-formcontrol text="Tarih Aralığı" for="name">
+                    <div class="ui-g-11">
+                        <p-calendar [locale]="calender_locale_tr" [(ngModel)]="dailyLessonStatusRange" selectionMode="range"
+                            [readonlyInput]="true" dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true"
+                            monthNavigator="true" [showIcon]="true" yearRange="1950:2050"></p-calendar>
+                    </div>
+                    <div class="ui-g-1">
+                        <button type="button" pButton icon="pi pi-search" (click)="searchStatistics()" pTooltip="Ara"></button>
+                    </div>
+                </srm-formcontrol>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-6 ">
+        <div class="card">
+            <h1 class="centerText">Bu Ay İşlenen Ders Durumları</h1>
+            <p-chart type="pie" [data]="dailyLessonStatus"></p-chart>
+            <div style="text-align: center; font-weight: bold;">
+                {{dailyLessonStatusDetail}}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-6 ">
+        <div class="card">
+            <h1 class="centerText">Öğrencilerin durumları</h1>
+            <p-chart type="pie" [data]="comgingStatus"></p-chart>
+            <div style="text-align: center; font-weight: bold;">
+                {{comingStatusDetail}}
+            </div>
+        </div>
+    </div>
+</div>

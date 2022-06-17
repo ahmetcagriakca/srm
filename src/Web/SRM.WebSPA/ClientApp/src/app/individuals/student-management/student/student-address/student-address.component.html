@@ -1,0 +1,77 @@
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+	<p-panel>
+		<div class="no-margin">
+			<div class="ui-g form-group ui-fluid">
+				<div class="ui-g-12 body-panel-start">
+					<srm-formcontrol text="Başlık" for="title">
+						<input pInputText autocomplete="off" id="title" name="title" formControlName="title" [(ngModel)]="record.address.title" pValidationTooltip
+						 [control]="baseForm.controls.title" />
+					</srm-formcontrol>
+					<srm-formcontrol text="Adres" for="addressInfo">
+						<textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%" pInputTextarea id="addressInfo" name="addressInfo"
+						 formControlName="addressInfo" placeholder="Adres giriniz" [(ngModel)]="record.address.addressInfo" autoResize="autoResize"
+						 pValidationTooltip [control]="baseForm.controls.addressInfo"></textarea>
+					</srm-formcontrol>
+					<srm-formcontrol text="Adres Tarifi" for="addressDirections">
+						<textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%" pInputTextarea id="addressDirections" name="addressDirections"
+						 formControlName="addressDirections" placeholder="Adres giriniz" [(ngModel)]="record.address.addressDirections" autoResize="autoResize"
+						 pValidationTooltip [control]="baseForm.controls.addressDirections"></textarea>
+					</srm-formcontrol>
+
+
+					<srm-formcontrol text="Bölge" for="locationRegion">
+						<p-dropdown id="locationRegion" [options]="LocationRegions" [(ngModel)]="selectedLocationRegion" filter="true" formControlName="locationRegion"
+						 [style]="{'width':'100%'}" pValidationTooltip [control]="baseForm.controls.locationRegion">
+							<ng-template let-record pTemplate="item">
+								<div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+									<div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+								</div>
+							</ng-template>
+						</p-dropdown>
+					</srm-formcontrol>
+
+					<srm-formcontrol text="Konum Bilgisi">
+						<p-gmap #gmap [style]="{ width: '100%', height: '320px', 'margin-bottom': '1em' }" [options]="options" [overlays]="overlays"
+						 (onMapClick)="handleMapClick($event)" (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"></p-gmap>
+
+
+						<div class="ui-g-12">
+							<div *ngIf="record.address.location.latitude!=0 && record.address.location.latitude!=null">
+								<div class="ui-g-12 ui-md-3">
+									<button type="button" pButton icon="fa fa-map-marker" (click)="toggleBounce()" label="Konum Bilgisini Düzenle" [disabled]="updateLocationStart"></button>
+								</div>
+								<div class="ui-g-12 ui-md-4">
+									<button type="button" pButton icon="fa fa-location-arrow" (click)="getAddressInfoFromMap(record)" label="Adres Bilgisini Haritadan Getir" ></button>
+								</div>
+							</div>
+
+							<div *ngIf="record.address.location.latitude==0 || record.address.location.latitude==null">
+									<div class="ui-g-12 ui-md-4">
+										<button type="button" pButton icon="fa fa-map-marker" (click)="setMapLocation()" label="Konum Bilgisini Gir" [disabled]="newLocationStart"></button>
+									</div>
+								
+							</div>
+
+						</div>
+
+					</srm-formcontrol>
+
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<div class="ui-g-12 ui-md-10">
+					</div>
+					<div class="ui-g-12 ui-md-2">
+						<div class="ui-dialog-buttonpane ui-helper-clearfix">
+							<button type="button" pButton icon="pi pi-check" (click)="save()" [disabled]="!isValid(baseForm)" label="Kaydet"></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</p-panel>
+</form>
+<!--  -->

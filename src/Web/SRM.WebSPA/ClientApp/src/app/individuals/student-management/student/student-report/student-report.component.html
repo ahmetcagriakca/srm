@@ -1,0 +1,90 @@
+<p-dataTable [value]="rowData" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]"
+    [responsive]="true">
+    <p-column field="reportNumber" header="Rapor Numarası" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+    <p-column field="givenHospital" header="Rapor Yeri" [sortable]="true" [style]="{'width':'35%'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            {{record[col.field]?.name}}
+        </ng-template>
+    </p-column>
+    <p-column field="startDate" header="Başlangıç Tarihi" [sortable]="true" [style]="{'width':'120px'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            {{record[col.field]|date:'dd.MM.yyyy'}}
+        </ng-template>
+    </p-column>
+    <p-column field="endDate" header="Bitiş Tarihi" [sortable]="true" [style]="{'width':'120px'}">
+        <ng-template let-col let-record="rowData" pTemplate="body">
+            {{record[col.field]|date:'dd.MM.yyyy'}}
+        </ng-template>
+    </p-column>
+    <p-column field="content" header="İçerik" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+    <p-column header="İşlemler" [style]="{'width':'220px'}">
+        <ng-template let-col let-record="rowData" pTemplate type="body">
+            <div class="ui-g">
+                <div class="ui-g-8 ui-md-8 ">
+                    <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)" label="Düzenle"></button>
+                </div>
+                <div class="ui-g-4 ui-md-4 ui-lg-4">
+                    <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)" label="Sil"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-column>
+    <p-footer>
+        <div class="ui-helper-clearfix" style="width:12%">
+            <button type="button" pButton icon="pi pi-plus" style="float:left" (click)="showDialogToAdd()" label="Yeni Rapor Giriş"></button>
+        </div>
+    </p-footer>
+</p-dataTable>
+
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Yeni Rapor Girişi" [(visible)]="displayDialog"
+        modal="modal" width="800" showEffect="fade">
+        <div class="ui-g form-group ui-fluid">
+            <div class="ui-g-12 body-panel-start">
+                <srm-formcontrol text="Rapor Numarası" for="name">
+                    <input pInputText autocomplete="off" [disabled]="true" OnlyNumber="true" name="reportNumber" formControlName="reportNumber"
+                        [(ngModel)]="record.reportNumber" pValidationTooltip [control]="baseForm.controls.reportNumber" />
+                </srm-formcontrol>
+                <srm-formcontrol text="Rapor Yeri" for="name">
+                    <p-dropdown id="givenHospital" [options]="Hospitals" [(ngModel)]="selectedHospital" filter="true"
+                        formControlName="givenHospital" [style]="{'width':'100%'}" pValidationTooltip [control]="baseForm.controls.givenHospital">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Başlangıç Tarihi" for="name">
+                    <p-calendar [locale]="calender_locale_tr" [style]="{'width':'100%'}" [(ngModel)]="record.startDate"
+                        formControlName="startDate" dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true"
+                        monthNavigator="true" [showIcon]="true" yearRange="1950:2050" pValidationTooltip [control]="baseForm.controls.startDate"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Bitiş Tarihi" for="name">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="record.endDate"
+                        formControlName="endDate" dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true"
+                        monthNavigator="true" [showIcon]="true" yearRange="1950:2050" pValidationTooltip [control]="baseForm.controls.endDate"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="İçerik" for="name">
+                    <textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%"  pInputTextarea formControlName="content" [(ngModel)]="record.content"
+                        autoResize="autoResize" pValidationTooltip [control]="baseForm.controls.content"></textarea>
+                </srm-formcontrol>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)"
+                    label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)"
+                    label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord"
+                    label="Sil"></button>
+            </div>
+            <!-- <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button> -->
+            <!-- <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)" label="Kaydet"></button> -->
+            <!-- <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord" label="Sil"></button> -->
+        </p-footer>
+    </p-dialog>
+</form>

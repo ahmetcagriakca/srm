@@ -1,0 +1,172 @@
+body .ui-breadcrumb ul li a {
+    background-color: #f5f8f9;
+}
+
+img.validation-image {
+    width: 20px;
+    margin: 2px 2px 0px 5px !important;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+@media (max-width: 640px) {
+
+    .body-panel-start {
+        padding: 0px !important;
+        margin-top: 0;
+    }
+}
+
+@media (min-width: 640px) {
+
+    .body-panel-start {
+        padding: 0px !important;
+        margin-top: 5px;
+    }
+}
+
+@media (min-width: 640px) {
+
+    .left-padding {
+        padding: 0 0 0 5px !important;
+    }
+}
+
+.ui-validation-shadow {
+    -webkit-box-shadow: 0 1px 2px 0 #f0d1d0;
+    -moz-box-shadow: 0 1px 2px 0 #f0d1d0;
+    box-shadow: 0 1px 2px 0 #f0d1d0;
+}
+
+.ui-validation-tooltip .ui-validation-tooltip-text {
+    padding: .125em .5em;
+    background-color: #f0d1d0;
+    color: #ffffff;
+    white-space: pre-line;
+}
+
+.login-body .login-panel .ui-g-12 {
+    padding: 5px 0 0 0;
+}
+
+body .ui-toast .ui-toast-message {
+    -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    margin: 0 0 1em 0;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-info {
+    background-color: #7fbcec;
+    border: 0 none;
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-info .ui-toast-close-icon {
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-success {
+    background-color: #b7d8b7;
+    border: 0 none;
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-success .ui-toast-close-icon {
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-warn {
+    background-color: #ffe399;
+    border: 0 none;
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-warn .ui-toast-close-icon {
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-error {
+    background-color: #f8b7bd;
+    border: 0 none;
+    color: #212121;
+}
+
+body .ui-toast .ui-toast-message.ui-toast-message-error .ui-toast-close-icon {
+    color: #212121;
+}
+
+.ui-fluid .ui-calendar.ui-calendar-w-btn .ui-inputtext{
+    width: calc(98% - 2em) !important;
+}
+.layout-wrapper .layout-content {
+    padding: 65px 5px 5px 5px;
+}
+
+.img-icon-padding {
+    padding-left:15%;
+}
+.span-title-advice-list {
+    font-size: 16px !important;
+    text-align: center;
+    padding: 5px 5px;
+    display: inherit;
+    background-color: #f7cb00;
+}
+.span-advice {
+    background-color: #f7cb00;
+    height: 17px;
+    padding: 0 5px;
+    color: #2d353c;
+    font-size: 12px !important;
+    text-align: center;
+    line-height: 17px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+
+.mapAdviceButton {
+    background-color: #f7cb00;
+    border-radius: 16px;
+    box-shadow: 2px 2px 2px #888888;
+    cursor:pointer;
+    margin-bottom:22px;
+    margin-top:5px;
+    margin-left:5px;
+    text-align:center;
+  
+}
+
+.mapAdviceButton:hover {
+    background-color: #dfb60e;
+}
+.span-advice-not-available {
+    background-color: #666666;
+    height: 17px;
+    padding: 0 5px;
+    color: #ffffff;
+    font-size: 12px !important;
+    text-align: center;
+    line-height: 17px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.student-call-button {  
+	cursor: pointer; 
+	font-size: 14px !important;
+    text-align: center;
+    padding: 0px 5px;
+    display: inherit;
+    background-color: #f7cb00;
+    border-radius: 10px;
+}
+
+.student-call-button:hover {
+    background-color: #dfb60e;
+}

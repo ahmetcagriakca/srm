@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  services-api:
+    build: 
+      context: src/Services/API/
+      dockerfile: SRM.Services.Api/Dockerfile
+
+  web-spa:
+    build: 
+      context: src/Web/SRM.WebSPA/
+      dockerfile: Dockerfile

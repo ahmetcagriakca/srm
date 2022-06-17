@@ -1,0 +1,10 @@
+<div [class.loader-hidden]="!show">
+
+    <div class="loader-overlay" >
+        <p-blockUI [blocked]="show" [autoZIndex]="false" [manuelZIndex]="50000"></p-blockUI>
+        <div>
+            <p-progressSpinner></p-progressSpinner>
+            <!-- <md-progress-bar mode="indeterminate" *ngIf="show"></md-progress-bar> -->
+        </div>
+    </div>
+</div>

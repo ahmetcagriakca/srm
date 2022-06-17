@@ -1,0 +1,38 @@
+<p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Öğrenci Arama Başlat"
+    [(visible)]="displayAdviceDialog" modal="modal" width="700" showEffect="fade">
+	<div class="ui-g-12">
+		<div class="ui-g-1 ui-sm-1"><b>Öğrenci: </b></div>
+		<div class="ui-g-3 ui-sm-1">
+			{{student?.studentName}} 
+		</div>
+		<div class="ui-g-2 ui-sm-1"><b>Devamsızlık: </b></div>
+		<div class="ui-g-2 ui-sm-1">
+			{{studentShuttleInfo?.advice?.disContinuityCount}}
+		</div>
+		<div class="ui-g-2 ui-sm-1"><b> AylıkDevamsızlık: </b></div>
+		<div class="ui-g-2 ui-sm-1">
+			{{studentShuttleInfo?.advice?.mounthlyDiscontinuityCount}}
+		</div>
+	</div>
+    <p-dataTable [value]="student?.contacts" [paginator]="false" [responsive]="true">
+        <p-column field="name" header="Veli Adı" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+        <p-column field="number" header="Numara" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+    </p-dataTable>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+            <srm-formcontrol text="Açıklama" for="studentAdviceDescription">
+                <textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%" pInputTextarea id="studentAdviceDescription"
+                    name="studentAdviceDescription" placeholder="Açıklama Giriniz" [(ngModel)]="studentAdviceDescription"
+                    autoResize="true"></textarea>
+            </srm-formcontrol>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <!-- <div class="ui-helper-clearfix" style="width:12%"> -->
+            <button type="button" pButton icon="pi pi-check" (click)="studentAnswer(0)" label="Onay" ></button>
+            <button type="button" pButton icon="pi pi-times" (click)="studentAnswer(1)" label="Red"></button>
+            <button type="button" pButton (click)="cancel()" label="İptal"></button>
+        </div>
+    </p-footer>
+</p-dialog>

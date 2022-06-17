@@ -1,0 +1,54 @@
+{
+  "DatabaseConfig": {
+    "Provider": "PostgreSql",
+    "ConnectionString": "User ID=srm;Password=123456;Host=localhost;Port=5432;Database=Srm.Services.Identity.Test;Pooling=true;"
+  },
+  "ExceptionConfig": {
+    "HandlerTypes": {
+      "File": "Fix.Exceptions.Handlers.FileLoggerExceptionHandler, Fix.Framework"
+    },
+    "Policies": [
+      {
+        "ExceptionType": "Fix.Exceptions",
+        "HandlerAlias": [ "File" ],
+        "IsEnabled": "1",
+        "IteratorType": "Sequential"
+      },
+      {
+        "ExceptionType": "*",
+        "HandlerAlias": [ "File" ],
+        "IsEnabled": "1",
+        "IteratorType": "Sequential"
+      }
+    ]
+  },
+  "ElasticConfiguration": {
+    "Uri": "http://localhost:9200/"
+  },
+  "IdentityConfig": {
+    "CertificatePath": "localhost.pfx",
+    "CertificatePassword": "123",
+    "Authority": "http://localhost",
+    "Audience": "api1"
+  },
+  "MiddlewareConfig": {
+    "UseMiddleware": "false"
+  },
+  "MVC.Filters": [
+    {
+      "AssemblyName": "",
+      "FilterType": "Fix.Mvc.Filters.FixExceptionFilter",
+      "Order": "1"
+    },
+    {
+      "AssemblyName": "",
+      "FilterType": "Fix.Mvc.Filters.ValidationFilter",
+      "Order": "2"
+    },
+    {
+      "AssemblyName": "",
+      "FilterType": "Fix.Mvc.Filters.TransactionFilter",
+      "Order": "9999"
+    }
+  ]
+}

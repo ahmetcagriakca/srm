@@ -1,0 +1,222 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <div class="ui-g">
+            <div class="ui-g-2">
+                <div class="ui-g-12 ui-md-12">
+                    <label>Gün</label>
+                </div>
+            </div>
+            <div class="ui-g-9">
+                <div class="ui-g-12 ui-md-12">
+                    <p-dropdown id="dayOfWeek" [options]="DayOfWeeks" [(ngModel)]="selectedDayOfWeek" filter="true"
+                        [style]="{'width':'100%'}">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="ui-g-1">
+                <div class="ui-g-12 ui-md-6">
+                    <button type="button" pButton icon="pi pi-search" (click)="getShuttleTemplates()" pTooltip="Taslat Ara"></button>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" pTooltip="Yeni Taslak Ekle"></button>
+                </div>
+            </div>
+        </div>
+        <p-dataView #dv [value]="rowData" [paginator]="false">
+            <ng-template let-shuttle pTemplate="listItem">
+                <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+                    <div class="ui-g-5 ui-md-6" style="text-align:center">
+                        <div class="ui-g">
+                            <div class="ui-g-4 ui-sm-6">Taslak No: </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.id}}</b>
+                            </div>
+                            <div class="ui-g-4 ui-sm-6">Bölge: </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.locationRegion.name}}</b>
+                            </div>
+                            <div class="ui-g-4 ui-sm-6">Servis (Maks.Kapasite): </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.studentService?.plate}}({{shuttle?.studentService?.maxCapacity}})</b>
+                            </div>
+                            <div class="ui-g-4 ui-sm-6">Haftanın hangi günü: </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.dayOfWeekName}}</b>
+                            </div>
+                            <div class="ui-g-4 ui-sm-6">Günün Hangi Saati: </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.time|date:'HH:mm'}}</b>
+                            </div>
+                            <div class="ui-g-4 ui-sm-6">Durum: </div>
+                            <div class="ui-g-8 ui-sm-6">
+                                <b>{{shuttle?.isActive?"Aktif":"Pasif"}}</b>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-4 car-details">
+                            <button type="button" pButton icon="pi pi-align-justify" (click)="showDialogToEdit(shuttle)"
+                                pTooltip="Servisi Düzenle" label="Servisi Düzenle"></button>
+                        </div>
+                    </div>
+                    <div class="ui-g-7 ui-md-6 car-details">
+                        <p-table [value]="shuttle.students">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Öğrenci ad</th>
+                                    <th>Sıra</th>
+                                    <th>Ders Sayısı</th>
+                                    <th width="100"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record>
+                                <tr>
+                                    <td>{{record.name}}</td>
+                                    <td>{{record.order}}</td>
+                                    <td>{{record.lessonCount}}</td>
+                                    <td>
+                                        <div class="ui-g">
+                                            <div class="ui-g-12 body-panel-start">
+                                                <div class="ui-g-6">
+                                                    <button type="button" pTooltip="Öğrenci Taslağını Güncelle" pButton icon="pi pi-align-justify"
+                                                        (click)="showTemplateStudentDialogToEdit(shuttle,record)"></button>
+                                                </div>
+                                                <div class="ui-g-6">
+                                                    <button type="button" pTooltip="Öğrenciyi Sil" pButton icon="pi pi-times"
+                                                        style="margin-left: 5px;" (click)="showStudentDialogToDelete(record)"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="footer">
+                                <button type="button" pTooltip="Yeni Öğrenci Ekle" pButton icon="pi pi-plus" (click)="showTemplateStudentDialogToAdd(shuttle)"></button>
+
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>
+
+<form autocomplete="off" [formGroup]="baseForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)"
+        header="Servis Taslak" [(visible)]="displayDialog" modal="modal" width="500" [responsive]="true" showEffect="fade">
+        <div class="ui-g">
+            <div class="ui-g-12 body-panel-start">
+                <srm-formcontrol text="Id" for="name">
+                    <input pInputText autocomplete="off" disabled="disabled" id="id" name="id" formControlName="id"
+                        [(ngModel)]="record.id" pValidationTooltip [control]="baseForm.controls.id" />
+                </srm-formcontrol>
+                <srm-formcontrol text="Bölge" for="locationRegion">
+                    <p-dropdown id="locationRegion" [options]="LocationRegions" [(ngModel)]="selectedLocationRegion"
+                        [disabled]="!newRecord" filter="true" formControlName="locationRegion" [style]="{'width':'100%'}"
+                        pValidationTooltip [control]="baseForm.controls.locationRegion">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Servis" for="studentService">
+                    <p-dropdown id="studentService" [options]="StudentServices" [(ngModel)]="selectedStudentService"
+                        filter="true" formControlName="studentService" [style]="{'width':'100%'}" pValidationTooltip
+                        [control]="baseForm.controls.studentService">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Haftanın Günü" for="dayOfWeek">
+                    <p-dropdown id="dayOfWeek" [disabled]="!newRecord" [options]="DayOfWeeks" [(ngModel)]="record.dayOfWeek"
+                        filter="true" formControlName="dayOfWeek" [style]="{'width':'100%'}" pValidationTooltip
+                        [control]="baseForm.controls.dayOfWeek">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Günün Saati" for="hourOfDate">
+                    <p-calendar [locale]="calender_locale_tr" [disabled]="!newRecord" [(ngModel)]="record.time"
+                        formControlName="time" [timeOnly]="true" pValidationTooltip [control]="baseForm.controls.time"></p-calendar>
+                </srm-formcontrol>
+                <srm-formcontrol text="Durum" for="name">
+                    <p-srmcheckbox binary="true" onLabel="Aktif" offLabel="Pasif" [(ngModel)]="record.isActive" id="isActive"
+                        name="isActive" formControlName="isActive" pValidationTooltip [control]="baseForm.controls.isActive"></p-srmcheckbox>
+                </srm-formcontrol>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)"
+                    label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)"
+                    label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="showShuttleTemplateDialogToDelete(record)" *ngIf="!templateIsActive && !record.isActive"
+                    label="Sil"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>
+
+<form autocomplete="off" [formGroup]="studentForm" novalidate>
+    <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)"
+        header="Taslak Öğrenci" [(visible)]="displayStudentDialog" modal="modal" width="500" [responsive]="true"
+        (onHide)="cancelStudent()" showEffect="fade">
+        <div class="ui-g form-group ui-fluid">
+            <div class="ui-g-12 body-panel-start">
+                <srm-formcontrol text="Öğrenciler" for="locationRegion">
+                    <p-dropdown id="student" [options]="Students" [(ngModel)]="selectedStudentId" filter="true"
+                        [disabled]="!newStudentRecord" formControlName="student" [style]="{'width':'100%'}"
+                        pValidationTooltip [control]="studentForm.controls.student">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+                <srm-formcontrol text="Sıra" for="name">
+                    <input pInputText autocomplete="off" id="order" OnlyNumber="true" name="order" autoComplete="off"
+                        formControlName="order" [(ngModel)]="recordStudent.order" pValidationTooltip [control]="studentForm.controls.order" />
+                </srm-formcontrol>
+                <srm-formcontrol text="Gireceği Ders Sayısı" for="name">
+                    <p-dropdown id="completedLessonCount" [options]="CompletedLessonCounts" formControlName="lessonCount"
+                        [(ngModel)]="recordStudent.lessonCount" filter="true" [style]="{'width':'100%'}"
+                        pValidationTooltip [control]="studentForm.controls.lessonCount">
+                        <ng-template let-record pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px;margin-left: 40px;">{{record.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </srm-formcontrol>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton (click)="cancelStudent()" label="İptal"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="saveStudent()" *ngIf="newStudentRecord"
+                    [disabled]="!isValid(studentForm)" label="Kaydet"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="saveStudent()" *ngIf="!newStudentRecord"
+                    [disabled]="!isValid(studentForm)" label="Güncelle"></button>
+                <button type="button" pButton icon="pi pi-times" (click)="showStudentDialogToDelete(recordStudent)"
+                    *ngIf="!newStudentRecord" label="Sil"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>

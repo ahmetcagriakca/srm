@@ -1,0 +1,108 @@
+<div class="ui-fluid">
+    <div class="ui-g-12">
+        <div class="ui-g">
+            <div class="ui-g-2">
+                <div class="ui-g-12 ui-md-12">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="searchDate" dateFormat="dd.mm.yy"
+                        showButtonBar="true" yearNavigator="true" monthNavigator="true" [showIcon]="true" yearRange="1950:2050"></p-calendar>
+                </div>
+            </div>
+
+            <div class="ui-g-1">
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button type="button" pButton icon="pi pi-search" (click)="search(selectedLesson.id)" label="Ara"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-9"></div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-3">
+                <div class="ui-g-12 ui-md-12">
+                    <p-listbox [options]="lessons" [(ngModel)]="selectedLesson" optionLabel="name" (onChange)="lessonSelect($event)"></p-listbox>
+                </div>
+            </div>
+            <div class="ui-g-9">
+
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ContentSideSections Implementation">
+                        <p-dataTable [value]="lessonSessions" [rows]="10" [paginator]="true" [pageLinks]="3"
+                            [rowsPerPageOptions]="[5,10,20]" [responsive]="true">
+                            <p-column [style]="{'width':'60px'}">
+                                <ng-template let-col let-record="rowData" pTemplate type="body">
+                                    <div class="ui-g">
+                                        <div class="ui-g-8 ui-md-8 ui-lg-8">
+                                            <button type="button" pButton icon="pi pi-search" (click)="showDialogToEdit(record)"></button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="startDate" header="Tarih" [sortable]="true" [style]="{'width':'120px'}">
+                                <ng-template let-col let-record="rowData" pTemplate="body">
+                                    {{record[col.field]|date:'dd.MM.yyyy'}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="startDate" header="Saat" [sortable]="true" [style]="{'width':'120px'}">
+                                <ng-template let-col let-record="rowData" pTemplate="body">
+                                    {{record[col.field]|date:'hh:mm'}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="header" header="Konu" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+
+                            <p-column field="instructor" header="Öğretmen" [sortable]="true" [style]="{'width':'35%'}">
+                                <ng-template let-col let-record="rowData" pTemplate="body">
+                                    <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">{{
+                                        record[col.field].name + " " +record[col.field].surname}}</div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <form autocomplete="off" [formGroup]="baseForm" novalidate>
+                <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Ders İçerik"
+                    [(visible)]="displayDialog" modal="modal" width="800" showEffect="fade">
+                    <div class="ui-g form-group ui-fluid">
+                        <div class="ui-g-12 body-panel-start">
+                            <srm-formcontrol text="Ad Soyad" for="name">
+                                <div class="ui-g-12 ui-md-6">
+                                    <input pInputText autocomplete="off" id="studentName" name="studentName" formControlName="studentName"
+                                        [(ngModel)]="record.lesson.student.name" pValidationTooltip [control]="baseForm.controls.studentName" />
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <input pInputText autocomplete="off" id="studentSurname" name="studentSurname" formControlName="studentSurname"
+                                        [(ngModel)]="record.lesson.student.surname" pValidationTooltip [control]="baseForm.controls.studentSurname" />
+                                </div>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Ders" for="name">
+                                <input pInputText autocomplete="off" id="lessonName" name="lessonName" formControlName="lessonName"
+                                    [(ngModel)]="record.lesson.name" pValidationTooltip [control]="baseForm.controls.lessonName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Dersin Konusu" for="name">
+                                <input pInputText autocomplete="off" id="lessonSessionHeader" name="lessonSessionHeader" formControlName="lessonSessionHeader"
+                                    [(ngModel)]="record.header" pValidationTooltip [control]="baseForm.controls.lessonSessionHeader" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Açıklama" for="name">
+                                <textarea autocomplete="rutjfkde" rows="2" style="min-height: 80px;width:100%"  pInputTextarea id="lessonSessionContent" name="lessonSessionContent"
+                                    formControlName="lessonSessionContent" [(ngModel)]="record.content" autoResize="autoResize"
+                                    pValidationTooltip [control]="baseForm.controls.lessonSessionContent"></textarea>
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                        <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord" [disabled]="!isValid(baseForm)"
+                            label="Kaydet"></button>
+                        <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord" [disabled]="!isValid(baseForm)"
+                            label="Güncelle"></button>
+                        <!-- <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)" *ngIf="!newRecord" label="Sil"></button> -->
+                    </p-footer>
+                </p-dialog>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,189 @@
+﻿<!-- <div class="ui-g ui-fluid">
+    <div class="ui-g-12 body-panel-start">
+        <form autocomplete="off" [formGroup]="searchForm" novalidate>
+            <p-panel>
+                <div class="no-margin">
+                    <h1>Arama Kriterleri</h1>
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <srm-formcontrol text="Id" for="name">
+                                <input pInputText autocomplete="off" id="id" name="id" formControlName="id" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Vz User Id" for="vzUserId">
+                                <input pInputText OnlyNumber="true" autocomplete="off" id="vzUserId" name="vzUserId"
+                                    formControlName="vzUserId" [(ngModel)]="record.vzUserId" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Kullanıcı Adı" for="userName">
+                                <input pInputText autocomplete="off" id="userName" name="userName"
+                                    formControlName="userName" [(ngModel)]="record.userName" />
+                            </srm-formcontrol>
+                        </div>
+                        <div class="ui-g-4">
+                            <srm-formcontrol text="Ad" for="firstName">
+                                <input pInputText autocomplete="off" id="url" name="firstName"
+                                    formControlName="firstName" [(ngModel)]="record.firstName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Soyad" for="lastName">
+                                <input pInputText autocomplete="off" id="url" name="lastName" formControlName="lastName"
+                                    [(ngModel)]="record.lastName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Email" for="email">
+                                <input pInputText autocomplete="off" id="url" name="email" formControlName="email"
+                                    [(ngModel)]="record.email" />
+                            </srm-formcontrol>
+                        </div>
+                        <div class="ui-g-4">
+                            <srm-formcontrol text="Kullanıcı Rolleri" for="subRegions">
+                                <p-multiSelect id="userRoles" [options]="Roles" [(ngModel)]="record.userRoleIds"
+                                    formControlName="userRoles" [style]="{'width':'100%'}">
+                                </p-multiSelect>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Aktif mi?" for="name">
+                                <p-triStateCheckbox id="isActive" name="isActive" formControlName="isActive"
+                                    (onChange)="onTriStateChange(1,$event)" [label]="activeStatelabel">
+                                </p-triStateCheckbox>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Silinmiş mi?" for="name">
+                                <p-triStateCheckbox id="isDeleted" name="isDeleted" formControlName="isDeleted"
+                                    (onChange)="onTriStateChange(2,$event)" [label]="deleteStatelabel">
+                                </p-triStateCheckbox>
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="ui-g-12 ui-md-2">
+                                <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()"
+                                    label="Ekle"></button>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <button type="button" pButton icon="pi pi-search" (click)="search(searchForm.value)"
+                                    label="Ara"></button>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </p-panel>
+        </form>
+        <div class="ContentSideSections Implementation">
+            <p-dataTable [value]="rowData" [rows]="10" [paginator]="true" [pageLinks]="3"
+                [rowsPerPageOptions]="[5,10,20]" [responsive]="true">
+                <p-header>
+                    Kullanıcılar
+                </p-header>
+                <p-column field="id" [style]="{'width':'40px'}" header="Id" [sortable]="true"></p-column>
+                <p-column field="vzUserId" [style]="{'width':'80px'}" header="Vz User ID" [sortable]="true"></p-column>
+                <p-column field="userName" [style]="{'width':'110px'}" header="Kullanıcı Adı" [sortable]="true">
+                </p-column>
+                <p-column field="firstName" [style]="{'width':'20%'}" header="Ad" [sortable]="true"></p-column>
+                <p-column field="lastName" [style]="{'width':'20%'}" header="Soyad" [sortable]="true"></p-column>
+                <p-column field="email" [style]="{'width':'200px'}" header="Email" [sortable]="true"></p-column>
+                <p-column field="isActive" header="Durum" [sortable]="true" [style]="{'width':'70px'}">
+                    <ng-template let-col let-record="rowData" pTemplate="body">
+                        <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">
+                            {{record[col.field]?'Aktif':'Pasif'}}
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-column field="isDeleted" header="Silinmiş" [sortable]="true" [style]="{'width':'70px'}">
+                    <ng-template let-col let-record="rowData" pTemplate="body">
+                        <div style="font-size:14px;float:left;margin-top:4px;margin-left: 10px;">
+                            {{record[col.field]?'Evet':'Hayır'}}
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-column header="İşlemler" [style]="{'width':'220px'}">
+                    <ng-template let-col let-record="rowData" pTemplate type="body">
+                        <div class="ui-g">
+                            <div class="ui-g-8 ui-md-8 ">
+                                <button type="button" pButton icon="pi pi-check" (click)="showDialogToEdit(record)"
+                                    label="Düzenle"></button>
+                            </div>
+                            <div class="ui-g-4 ui-md-4 ui-lg-4">
+                                <button type="button" pButton icon="pi pi-times" (click)="showDialogToDelete(record)"
+                                    label="Sil"></button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix " style="width:12%">
+                        <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()"
+                            label="Ekle"></button>
+                    </div>
+                </p-footer>
+            </p-dataTable>
+            <form autocomplete="off" [formGroup]="baseForm" novalidate>
+                <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog
+                    (onShow)="dialogOnShowCenter(dialog)" header="Proje Detay" [(visible)]="displayDialog" modal="modal"
+                    width="500" [responsive]="true" showEffect="fade">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 body-panel-start">
+                            <srm-formcontrol text="Id" for="name">
+                                <input pInputText autocomplete="off" disabled="disabled" id="id" name="id"
+                                    formControlName="id" [(ngModel)]="record.id" pValidationTooltip
+                                    [control]="baseForm.controls.id" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Vz User Id" for="vzUserId">
+                                <input pInputText OnlyNumber="true" autocomplete="off" id="vzUserId" name="vzUserId"
+                                    formControlName="vzUserId" [(ngModel)]="record.vzUserId" pValidationTooltip
+                                    [control]="baseForm.controls.vzUserId" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Kullanıcı Adı" for="userName">
+                                <input pInputText autocomplete="off" id="userName" name="userName"
+                                    formControlName="userName" [(ngModel)]="record.userName" pValidationTooltip
+                                    [control]="baseForm.controls.userName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Ad" for="firstName">
+                                <input pInputText autocomplete="off" id="url" name="firstName"
+                                    formControlName="firstName" [(ngModel)]="record.firstName" pValidationTooltip
+                                    [control]="baseForm.controls.firstName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Soyad" for="lastName">
+                                <input pInputText autocomplete="off" id="url" name="lastName" formControlName="lastName"
+                                    [(ngModel)]="record.lastName" pValidationTooltip
+                                    [control]="baseForm.controls.lastName" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Email" for="email">
+                                <input pInputText autocomplete="off" id="url" name="email" formControlName="email"
+                                    [(ngModel)]="record.email" pValidationTooltip [control]="baseForm.controls.email" />
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Kullanıcı Rolleri" for="subRegions">
+                                <p-multiSelect id="userRoles" [options]="Roles" [(ngModel)]="record.userRoleIds"
+                                    formControlName="userRoles" [style]="{'width':'100%'}" pValidationTooltip
+                                    [control]="baseForm.controls.userRoles"></p-multiSelect>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Aktif mi?" for="name">
+                                <p-srmcheckbox binary="true" onLabel="Aktif" offLabel="Pasif"
+                                    [(ngModel)]="record.isActive" id="isActive" name="isActive"
+                                    formControlName="isActive" pValidationTooltip
+                                    [control]="baseForm.controls.isActive"></p-srmcheckbox>
+                            </srm-formcontrol>
+                            <srm-formcontrol text="Silinmiş mi?" for="name">
+                                <p-srmcheckbox binary="true" disabled="disabled" onLabel="Silinmiş" offLabel="Pasif"
+                                    [(ngModel)]="record.isDeleted" id="isDeleted" name="isDeleted"
+                                    formControlName="isDeleted" pValidationTooltip
+                                    [control]="baseForm.controls.isDeleted"></p-srmcheckbox>
+                            </srm-formcontrol>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                            <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="İptal"></button>
+                            <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="newRecord"
+                                [disabled]="!isValid(baseForm)" label="Kaydet"></button>
+                            <button type="button" pButton icon="pi pi-check" (click)="save()" *ngIf="!newRecord"
+                                [disabled]="!isValid(baseForm)" label="Güncelle"></button>
+                            <button type="button" pButton icon="pi pi-check" (click)="showDialogToDelete(record)"
+                                *ngIf="!newRecord" label="Sil"></button>
+                        </div>
+                    </p-footer>
+                </p-dialog>
+            </form>
+        </div>
+    </div>
+</div> -->

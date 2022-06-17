@@ -1,0 +1,44 @@
+<div class="topbar">
+    <div class="topbar-main">
+        <a href="#" id="menu-button" (click)="app.onMenuButtonClick($event)">
+            <span class="pi pi-bars"></span>
+        </a>
+        <a href="/">
+            <img alt="main logo" src="assets/layout/images/srm-main.png" class="logo">
+        </a>
+        <div class="app-name">SRM {{_configurationService.serverSettings.applicationName}}</div>
+
+        <a href="#" id="user-display" (click)="app.onTopbarMenuButtonClick($event)" *ngIf="securityService.Authenticated()">
+            <span class="username">{{user?user.name:''}} {{user?user.surname:''}}</span>
+            <span class="userrole">{{role?role.description:''}}</span>
+            <img alt="main logo" src="assets/layout/images/avatar.png">
+        </a>
+
+        <a href="#" id="user-display" [routerLink]="['/login']" *ngIf="!securityService.Authenticated()">
+            <span class="username">Giriş Yap</span>
+        </a>
+
+        <ul id="topbar-menu" class="fadeInDown animated" [ngClass]="{'topbar-menu-visible': app.topbarMenuActive}">
+            <li class="search-item">
+                <div>
+                    <input type="text" pInputText placeholder="Ara" />
+                    <span class="pi pi-search"></span>
+                </div>
+            </li>
+
+            <li role="menuitem">
+
+				<a href="#" [routerLink]="['/security/change-password']">
+					<span >Şifre Değiştir</span>
+				</a>
+                <a href="#" (click)="logout()">
+                    <i class="pi pi-fw pi pi-user-minus"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <app-menu [reset]="app.resetMenu"></app-menu>
+
+</div>

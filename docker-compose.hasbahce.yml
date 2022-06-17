@@ -1,0 +1,35 @@
+version: "3"
+services:
+  postgre-db:
+    ports:
+      - "5436:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_USER=srm
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=Srm.Services.Api.Hasbahce
+
+  services-api:
+    ports:
+      - '89:80'
+    depends_on:
+      - postgre-db
+    volumes:
+      - /environments/srm/hasbahce/services-api/appsettings.json:/app/appsettings.json
+      - /environments/Logs/srm/hasbahce/services-api/:/app/Logs
+    restart: always
+
+  web-spa:
+    ports:
+      - '88:80'
+    volumes:
+      - /environments/srm/hasbahce/web-spa/appsettings.json:/app/appsettings.json
+    depends_on:
+      - services-api
+    restart: always
+
+volumes:
+  pgdata:
+    driver: local

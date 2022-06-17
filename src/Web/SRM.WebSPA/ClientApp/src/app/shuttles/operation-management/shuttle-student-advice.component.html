@@ -1,0 +1,52 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <div class="ui-g" *ngIf="showDateSearch">
+            <div class="ui-g-3">
+                <div class="ui-g-12 ui-md-12">
+                    <label for="{{for}}">Tarih</label>
+                </div>
+            </div>
+            <div class="ui-g-6">
+                <div class="ui-g-12 ui-md-12">
+                    <p-calendar [locale]="calender_locale_tr" [(ngModel)]="shuttleOperationDate" dateFormat="dd.mm.yy" showButtonBar="true" yearNavigator="true"
+                        monthNavigator="true" [showIcon]="true" yearRange="1950:2050"></p-calendar>
+                </div>
+            </div>
+            <div class="ui-g-3">
+                <div class="ui-g-12 ui-md-6">
+                        <button type="button" pButton icon="pi pi-search" (click)="getStudentShuttleCallList()" label="Ara"></button>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                        <button type="button" pButton icon="pi pi-search" (click)="createDailyAdvice()" label="Öneri Oluştur" [disabled]="checkAdviceCreate()"></button>
+                </div>
+            </div>
+        </div>
+        <p-dataTable [value]="rowData" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]" [responsive]="true">
+            <p-column field="dateTime" header="Zaman" [sortable]="true" [style]="{'width':'35%'}">
+                <ng-template let-col let-record="rowData" pTemplate="body">
+                    {{record[col.field]|date:'HH:mm'}}
+                </ng-template>
+            </p-column>
+            <p-column field="destinationName" header="Servis Ana Bölge" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column field="studentName" header="Öğrenci Adı" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column field="studentDiscontinuityCount" header="Devamsızlık Sayısı" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column field="studentMounthlyDiscontinuityCount" header="Aylık Devamsızlık Sayısı" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column field="parentName" header="Ebeveyn Adı" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column field="phone" header="Telefon" [sortable]="true" [style]="{'width':'35%'}"></p-column>
+            <p-column header="İşlemler" [style]="{'width':'210px'}">
+                <ng-template let-col let-record="rowData" pTemplate type="body">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ">
+                            <button type="button" pButton icon="pi pi-call" (click)="startStudenCall(record)" label="Öğrenci Arama Başlat" [disabled]="checkAdviceCreate(record.dateTime)"></button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+        <student-advice-call></student-advice-call>
+        <p-dialog appendTo="body" [contentStyle]="{'overflow':'visible'}" #dialog (onShow)="dialogOnShowCenter(dialog)" header="Öğrenci kısıt girişi" [(visible)]="displayStudentAvailableDialog" modal="modal" [responsive]="true"
+            showEffect="fade" width="1000">
+            <student-available-time [isSeperated]="true"></student-available-time>
+        </p-dialog>
+    </div>
+</div>
